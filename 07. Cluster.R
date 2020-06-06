@@ -19,7 +19,7 @@ plot(jerarquico,main= "Cluster")
 # señala los clusters en un cuadrado (k=número de clusters a señalar)
 rect.hclust(jerarquico, k=3, border="red")
 
-
+data[,-1]
 
 #2.Cluster KMeans
 res <- kmeans(scale(data[,-1]),3) # 3 clusters

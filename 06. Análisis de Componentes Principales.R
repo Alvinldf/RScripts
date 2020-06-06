@@ -16,15 +16,17 @@ attach(data)
 
 #1. Prueba bivariada
 plot(Area,GDP)
-
+# Test de correlación de Pearson
 cor.test(Area,GDP,
          alternative = c("two.sided"),
          method = c("pearson"),conf.level = 0.95)
 
+# Test de correlación Kendall
 cor.test(Area,GDP,
          alternative = c("two.sided"),
          method = c("kendall"),conf.level = 0.95)
 
+# Test de correlación de Spearman
 cor.test(Area,GDP,
          alternative = c("two.sided"),
          method = c("spearman"),conf.level = 0.95)
@@ -36,27 +38,29 @@ correlations
 
 plot(data[,2:8])
 
-install.packages("corrplot")
+#install.packages("corrplot")
 library(corrplot)
-correlations<-cor(data[,2:8])
+# correlations<-cor(data[,2:8]) ya se realizó anteriormente
 corrplot(correlations)
 
-install.packages("car")
-library(car)
+# install.packages("car")
+library(car) # Nos va a servir para realizar scatter plot de las conbianciones de todas las variables
+# Muestra una tendencia y bandas de confianza
 scatterplotMatrix(data[,2:8], diagonal = "hist")
 
 #Prueba de Esferecidad de Bartlett
 t.bartlett <- function( data,alpha ){
-  n <- dim(data)[1]
-  p <- dim(data)[2]
-  R <- cor(data)
-  chi.square <- -(n-1-(2*p+5)/6) * log(det(R))
+  n <- dim(data)[1] #Filas
+  p <- dim(data)[2] #Columnas
+  R <- cor(data) #Correlación
+  chi.square <- -(n-1-(2*p+5)/6) * log(det(R)) # fórmula de la prueba chicuadrado
   cat("\n","Prueba de Esferecidad de Bartlett","\n","\n")
   cat('chi.square = ', round(chi.square,3) , 
       ', df = ', (p^2-p)/2, 
       ', p-value = ', 1-pchisq(chi.square,(p^2-p)/2))
 } 
 t.bartlett(data[,2:8],0.05)
+
 
 ########################
 #Componentes Principales
@@ -97,8 +101,8 @@ pca1$rotation
 #Vectores de puntuaci?n de componentes principales
 dim(pca1$x)
 
-#1. Elecci?n del n?mero de componentes
-summary(pca1)
+#1. Elecci?n del n?mero de componentes este da toda la información de una
+summary(pca1) # elegimos de frente con esta técnica (cuando la desviación estandar en mayor a uno)
 
 screeplot(pca1)
 abline(a = 1, b = 0, col = "red")
@@ -158,7 +162,7 @@ pca2$x <- -pca2$x
 biplot(pca2,scale=0, cex=.7)
 
 # PCA Variable Factor Map 
-install.packages("FactoMineR")
+#install.packages("FactoMineR")
 library(FactoMineR)
 par(mfrow=c(1,2))
 pca3 <- PCA(data[,2:8])
@@ -175,7 +179,7 @@ head(data1)
 str(data1)
 
 #4- Correlaci?n entre componentes
-library(corrplot)
+#library(corrplot)
 correlations <- cor(data1[,2:4])
 corrplot(correlations)
 
